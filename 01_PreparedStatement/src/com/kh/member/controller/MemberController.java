@@ -19,4 +19,10 @@ public class MemberController {
 		return result;
 	}
 
+	public int deleteMember(Member member) {
+		int result = memberDao.deleteMember(member);
+
+		return result;
+	}
+
 }
