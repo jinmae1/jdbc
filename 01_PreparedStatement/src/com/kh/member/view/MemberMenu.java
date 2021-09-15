@@ -40,8 +40,11 @@ public class MemberMenu {
 
 					break;
 				case "3":
+					// TODO: 이름검색
+					// 이름 일부만 입력해도 조회가 가능해야 한다.
 					break;
 				case "4":
+					// TODO: 회원가입시 아이디 중복이 되지 않도록 미리 검사할 것
 					member = inputMember();
 					System.out.println("member@menu = " + member);
 					result = memberController.insertMember(member); // 모든 dml요청은 정수값이 반환됨
@@ -49,6 +52,10 @@ public class MemberMenu {
 					System.out.println(result > 0 ? "회원 가입 성공!" : "회원 가입 실패!");
 					break;
 				case "5":
+					// TODO: 수정
+					// 별도의 수정 서브메뉴를 통해, 이름, 이메일, 주소를 변경
+					// 단, 수정메뉴 진입 시 변경할 아이디를 조회 후, 조회된 회원이 있을 경우만 수정메뉴를 출력
+					// 수정메뉴 출력 전에 해당회원의 정보를 1회 출력
 					break;
 				case "6":
 					id = inputId("삭제할 아이디를 입력하세요: ");
