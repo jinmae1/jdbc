@@ -98,4 +98,43 @@ public class MemberDao {
 		return result;
 	}
 
+	public int deleteMember(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "delete from member where id = ?";
+		int result = 0;
+
+		try {
+			Class.forName(driverClass);
+
+			conn = DriverManager.getConnection(url, user, password);
+			conn.setAutoCommit(false);
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			result = pstmt.executeUpdate();
+
+			if (result > 0)
+				conn.commit();
+			else
+				conn.rollback();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 }
