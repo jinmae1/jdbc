@@ -35,4 +35,8 @@ public class MemberController {
 		return memberDao.selectAllMember();
 	}
 
+	public List<Member> selectMemberByName(String name) {
+		return memberDao.selectMemberByName(name);
+	}
+
 }

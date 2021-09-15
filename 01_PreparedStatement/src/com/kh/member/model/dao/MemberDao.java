@@ -174,6 +174,55 @@ public class MemberDao {
 		return member;
 	}
 
+	public List<Member> selectMemberByName(String name) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = "select * from member where name like ?";
+		List<Member> list = new ArrayList<>();
+
+		try {
+			Class.forName(driverClass);
+			conn = DriverManager.getConnection(url, user, password);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, '%' + name + '%');
+			rset = pstmt.executeQuery();
+
+			while (rset.next()) {
+				String id = rset.getString("id"); // 현재 행의 id컬럼(문자형)
+				String match_name = rset.getString("name");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String address = rset.getString("address");
+				Timestamp reg_date = rset.getTimestamp("reg_date");
+
+				Member member = new Member(id, match_name, gender, birthday, email, address, reg_date);
+				list.add(member);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rset.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+
 	public int insertMember(Member member) {
 
 		// 1. driver class 등록(프로그램 실행 시 1회)

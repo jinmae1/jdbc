@@ -26,6 +26,7 @@ public class MemberMenu {
 			Member member = null;
 			int result = 0;
 			String id = null;
+			String name = null;
 			List<Member> list = null;
 
 			switch (choice) {
@@ -40,8 +41,9 @@ public class MemberMenu {
 
 					break;
 				case "3":
-					// TODO: 이름검색
-					// 이름 일부만 입력해도 조회가 가능해야 한다.
+					name = inputName("조회할 이름: ");
+					list = memberController.selectMemberByName(name);
+					printMemberList(list);
 					break;
 				case "4":
 					// TODO: 회원가입시 아이디 중복이 되지 않도록 미리 검사할 것
@@ -149,4 +151,10 @@ public class MemberMenu {
 		System.out.print(msg);
 		return sc.next();
 	}
+
+	private String inputName(String msg) {
+		System.out.print(msg);
+		return sc.next();
+	}
+
 }
