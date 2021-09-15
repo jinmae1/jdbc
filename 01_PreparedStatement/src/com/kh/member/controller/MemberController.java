@@ -19,8 +19,8 @@ public class MemberController {
 		return result;
 	}
 
-	public int deleteMember(Member member) {
-		int result = memberDao.deleteMember(member);
+	public int deleteMember(String id) {
+		int result = memberDao.deleteMember(id);
 
 		return result;
 	}

@@ -98,10 +98,10 @@ public class MemberDao {
 		return result;
 	}
 
-	public int deleteMember(Member member) {
+	public int deleteMember(String id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "delete from member where id = ? and name = ?";
+		String sql = "delete from member where id = ?";
 		int result = 0;
 
 		try {
@@ -111,8 +111,7 @@ public class MemberDao {
 			conn.setAutoCommit(false);
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, member.getId());
-			pstmt.setString(2, member.getName());
+			pstmt.setString(1, id);
 
 			result = pstmt.executeUpdate();
 
@@ -126,12 +125,12 @@ public class MemberDao {
 		} finally {
 			try {
 				pstmt.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 				conn.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

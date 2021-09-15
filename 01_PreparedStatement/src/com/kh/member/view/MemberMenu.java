@@ -23,6 +23,7 @@ public class MemberMenu {
 
 			Member member = null;
 			int result = 0;
+			String id = null;
 
 			switch (choice) {
 				case "1":
@@ -41,9 +42,9 @@ public class MemberMenu {
 				case "5":
 					break;
 				case "6":
-					member = deleteMember();
-					System.out.println("member@menu = " + member);
-					result = memberController.deleteMember(member);
+					id = inputId("삭제할 아이디를 입력하세요: ");
+					System.out.println("member@menu = " + id);
+					result = memberController.deleteMember(id);
 					System.out.println(result > 0 ? "회원 삭제 성공!" : "회원 삭제 실패!");
 					break;
 				case "0":
@@ -90,15 +91,8 @@ public class MemberMenu {
 		return new Member(id, name, gender, birthday, email, address, null);
 	}
 
-	private Member deleteMember() {
-		System.out.println("삭제할 회원정보를 입력하세요");
-
-		System.out.print("아이디: ");
-		String id = sc.next();
-
-		System.out.print("이름: ");
-		String name = sc.next();
-
-		return new Member(id, name, null, null, null, null, null);
+	private String inputId(String msg) {
+		System.out.print(msg);
+		return sc.next();
 	}
 }
