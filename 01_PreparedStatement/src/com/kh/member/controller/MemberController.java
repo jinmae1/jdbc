@@ -43,4 +43,8 @@ public class MemberController {
 		return memberDao.selectMemberByName(name);
 	}
 
+	public int modifyMember(Member member, String field, String newValue) {
+		return memberDao.modifyMember(member, field, newValue);
+	}
+
 }
