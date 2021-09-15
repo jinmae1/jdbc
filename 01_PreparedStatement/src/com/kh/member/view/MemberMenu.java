@@ -34,17 +34,19 @@ public class MemberMenu {
 					list = memberController.selectAllMember();
 					printMemberList(list);
 					break;
+
 				case "2":
 					id = inputId("조회할 아이디: ");
 					member = memberController.selectOneMember(id);
 					printMember(member);
-
 					break;
+
 				case "3":
 					name = inputName("조회할 이름: ");
 					list = memberController.selectMemberByName(name);
 					printMemberList(list);
 					break;
+
 				case "4":
 					member = inputMember();
 					System.out.println("member@menu = " + member);
@@ -52,6 +54,7 @@ public class MemberMenu {
 					// result는 실행된 행의 개수
 					System.out.println(result > 0 ? "회원 가입 성공!" : "회원 가입 실패!");
 					break;
+
 				case "5":
 					id = inputId("수정할 아이디: ");
 					member = memberController.selectOneMember(id);
@@ -63,12 +66,14 @@ public class MemberMenu {
 					printMember(member);
 					updateMenu(member);
 					break;
+
 				case "6":
 					id = inputId("삭제할 아이디를 입력하세요: ");
 					System.out.println("member@menu = " + id);
 					result = memberController.deleteMember(id);
 					System.out.println(result > 0 ? "회원 삭제 성공!" : "회원 삭제 실패!");
 					break;
+
 				case "0":
 					return;
 
@@ -122,16 +127,17 @@ public class MemberMenu {
 	// return
 	private Member inputMember() {
 		String id = null;
-		Member member = null;
+		boolean usrExists;
+
 		System.out.println("새 회원정보를 입력하세요");
 		do {
 			id = inputId("아이디: ");
-			member = memberController.selectOneMember(id);
+			usrExists = userExists(id);
 
-			if (member != null)
+			if (usrExists)
 				System.out.println("아이디가 이미 존재합니다.");
 
-		} while (member != null);
+		} while (usrExists);
 
 		System.out.print("이름: ");
 		String name = sc.next();
@@ -195,17 +201,26 @@ public class MemberMenu {
 
 			switch (choice) {
 				case "1":
-					newValue = modifyMember("name", member.getName());
+					newValue = modifyInfo("이름", member.getName());
 					result = memberController.modifyMember(member, "name", newValue);
+					if (printResult("이름", result))
+						member.setName(newValue);
 					break;
+
 				case "2":
-					newValue = modifyMember("email", member.getEmail());
+					newValue = modifyInfo("이메일", member.getEmail());
 					result = memberController.modifyMember(member, "email", newValue);
+					if (printResult("이메일", result))
+						member.setEmail(newValue);
 					break;
+
 				case "3":
-					newValue = modifyMember("address", member.getAddress());
+					newValue = modifyInfo("주소", member.getAddress());
 					result = memberController.modifyMember(member, "address", newValue);
+					if (printResult("주소", result))
+						member.setAddress(newValue);
 					break;
+
 				case "0":
 					return;
 
@@ -216,9 +231,19 @@ public class MemberMenu {
 		}
 	}
 
-	private String modifyMember(String field, String oldValue) {
+	private String modifyInfo(String field, String oldValue) {
 		System.out.print("변경할 " + field + "을(를) 입력하세요(현재값: " + oldValue + "): ");
 		sc.nextLine();
 		return sc.nextLine();
+	}
+
+	private boolean printResult(String field, int result) {
+		if (result > 0) {
+			System.out.println(field + " 변경 성공");
+			return true;
+		} else {
+			System.out.println(field + "변경 실패");
+			return false;
+		}
 	}
 }
