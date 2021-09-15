@@ -21,6 +21,10 @@ public class MemberController {
 		return result;
 	}
 
+	// public boolean checkDuplication(String id) {
+	// return result = memberDao.checkDuplication();
+	// }
+
 	public Member selectOneMember(String id) {
 		return memberDao.selectOneMember(id);
 	}

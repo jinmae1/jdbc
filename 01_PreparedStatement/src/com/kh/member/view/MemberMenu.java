@@ -46,7 +46,6 @@ public class MemberMenu {
 					printMemberList(list);
 					break;
 				case "4":
-					// TODO: 회원가입시 아이디 중복이 되지 않도록 미리 검사할 것
 					member = inputMember();
 					System.out.println("member@menu = " + member);
 					result = memberController.insertMember(member); // 모든 dml요청은 정수값이 반환됨
@@ -117,10 +116,17 @@ public class MemberMenu {
 
 	// return
 	private Member inputMember() {
+		String id = null;
+		Member member = null;
 		System.out.println("새 회원정보를 입력하세요");
+		do {
+			id = inputId("아이디: ");
+			member = memberController.selectOneMember(id);
 
-		System.out.print("아이디: ");
-		String id = sc.next();
+			if (member != null)
+				System.out.println("아이디가 이미 존재합니다.");
+
+		} while (member != null);
 
 		System.out.print("이름: ");
 		String name = sc.next();
