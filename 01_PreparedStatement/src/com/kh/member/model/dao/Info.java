@@ -3,7 +3,6 @@ package com.kh.member.model.dao;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Info {
 

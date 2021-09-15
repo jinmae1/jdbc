@@ -92,7 +92,7 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return id + "\t" + name + "\t" + gender + "\n" + birthday + "\n" + email + "\n" + address + "\n" + regDate;
+		return id + "\t" + name + "\t" + gender + "\t" + birthday + "\t" + email + "\t" + address + "\t" + regDate;
 	}
 
 }
