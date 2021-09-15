@@ -21,6 +21,10 @@ public class MemberController {
 		return result;
 	}
 
+	public Member selectOneMember(String id) {
+		return memberDao.selectOneMember(id);
+	}
+
 	public int deleteMember(String id) {
 		int result = memberDao.deleteMember(id);
 

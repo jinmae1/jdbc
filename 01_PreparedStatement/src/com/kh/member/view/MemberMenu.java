@@ -1,6 +1,7 @@
 package com.kh.member.view;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -33,6 +34,10 @@ public class MemberMenu {
 					printMemberList(list);
 					break;
 				case "2":
+					id = inputId("조회할 아이디: ");
+					member = memberController.selectOneMember(id);
+					printMember(member);
+
 					break;
 				case "3":
 					break;
@@ -82,6 +87,22 @@ public class MemberMenu {
 			System.out.println(
 					"--------------------------------------------------------------------------------------------");
 
+		}
+	}
+
+	private void printMember(Member member) {
+		if (member == null)
+			System.out.println("해당하는 회원이 없습니다.");
+		else {
+			System.out.println("-----------------------------------------");
+			System.out.println("아이디: " + member.getId());
+			System.out.println("이름: " + member.getName());
+			System.out.println("성별: " + member.getGender());
+			System.out.println("이메일: " + member.getEmail());
+			System.out.println("주소: " + member.getAddress());
+			SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd hh:mm");
+			System.out.println("등록일: " + sdf.format(member.getRegDate()));
+			System.out.println("-----------------------------------------");
 		}
 	}
 

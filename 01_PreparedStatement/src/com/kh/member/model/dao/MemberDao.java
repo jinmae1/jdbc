@@ -110,6 +110,70 @@ public class MemberDao {
 		return list;
 	}
 
+	public Member selectOneMember(String id) {
+		String sql = "select * from member where id = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member member = null; // 조회된 결과가 없으면 null을 리턴
+
+		// 1. driverClass 등록
+		// 2. Connection객체 생성
+		// 3. PreparedStatement객체 생성
+		// 4. 쿼리 실행
+		// 5. ResultSet -> Member변환
+		// 6. 자원 반납
+
+		try {
+			// 1.
+			Class.forName(driverClass);
+
+			// 2.
+			conn = DriverManager.getConnection(url, user, password);
+
+			// 3.
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			// 4.
+			rset = pstmt.executeQuery();
+
+			// 5.
+			if (rset.next()) {
+				member = new Member();
+				member.setId(rset.getString(1)); // 컬럼 인덱스로 접근 가능
+				member.setName(rset.getString(2));
+				member.setGender(rset.getString(3));
+				member.setBirthday(rset.getDate(4));
+				member.setEmail(rset.getString(5));
+				member.setAddress(rset.getString(6));
+				member.setRegDate(rset.getTimestamp(7));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 6.
+			try {
+				rset.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return member;
+	}
+
 	public int insertMember(Member member) {
 
 		// 1. driver class 등록(프로그램 실행 시 1회)
