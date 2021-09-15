@@ -52,10 +52,15 @@ public class MemberMenu {
 					System.out.println(result > 0 ? "회원 가입 성공!" : "회원 가입 실패!");
 					break;
 				case "5":
-					// TODO: 수정
-					// 별도의 수정 서브메뉴를 통해, 이름, 이메일, 주소를 변경
-					// 단, 수정메뉴 진입 시 변경할 아이디를 조회 후, 조회된 회원이 있을 경우만 수정메뉴를 출력
-					// 수정메뉴 출력 전에 해당회원의 정보를 1회 출력
+					id = inputId("수정할 아이디: ");
+					member = memberController.selectOneMember(id);
+
+					if (!userExists(member)) {
+						System.out.println("해당하는 회원이 없습니다.");
+						break;
+					}
+					printMember(member);
+					updateMenu(member);
 					break;
 				case "6":
 					id = inputId("삭제할 아이디를 입력하세요: ");
@@ -148,5 +153,59 @@ public class MemberMenu {
 	private String inputId(String msg) {
 		System.out.print(msg);
 		return sc.next();
+	}
+
+	private boolean userExists(String id) {
+		Member member = memberController.selectOneMember(id);
+		if (member == null)
+			return false;
+		else
+			return true;
+	}
+
+	private boolean userExists(Member member) {
+		if (member == null)
+			return false;
+		else
+			return true;
+	}
+
+	private void updateMenu(Member member) {
+		String menu = "------ 회원정보 수정메뉴 ------\n" + "1. 이름 변경\n" + "2. 이메일 변경\n" + "3. 주소 변경\n" + "0. 메인메뉴 돌아가기\n"
+				+ "---------------------------\n" + "선택 : ";
+
+		while (true) {
+			System.out.print(menu);
+			String choice = sc.next();
+			int result = 0;
+			String newValue = null;
+
+			switch (choice) {
+				case "1":
+					newValue = modifyMember("name", member.getName());
+					result = memberController.modifyMember(member, "name", newValue);
+					break;
+				case "2":
+					newValue = modifyMember("email", member.getEmail());
+					result = memberController.modifyMember(member, "email", newValue);
+					break;
+				case "3":
+					newValue = modifyMember("address", member.getAddress());
+					result = memberController.modifyMember(member, "address", newValue);
+					break;
+				case "0":
+					return;
+
+				default:
+					System.out.println("잘못 입력하셨습니다.");
+					break;
+			}
+		}
+	}
+
+	private String modifyMember(String field, String oldValue) {
+		System.out.print("변경할 " + field + "을(를) 입력하세요(현재값: " + oldValue + "): ");
+		sc.nextLine();
+		return sc.nextLine();
 	}
 }
