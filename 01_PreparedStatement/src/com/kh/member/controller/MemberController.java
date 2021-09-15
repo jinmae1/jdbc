@@ -1,5 +1,7 @@
 package com.kh.member.controller;
 
+import java.util.List;
+
 import com.kh.member.model.dao.MemberDao;
 import com.kh.member.model.vo.Member;
 
@@ -23,6 +25,10 @@ public class MemberController {
 		int result = memberDao.deleteMember(id);
 
 		return result;
+	}
+
+	public List<Member> selectAllMember() {
+		return memberDao.selectAllMember();
 	}
 
 }

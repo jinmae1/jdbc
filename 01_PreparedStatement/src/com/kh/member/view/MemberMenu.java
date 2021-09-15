@@ -3,6 +3,7 @@ package com.kh.member.view;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 
 import com.kh.member.controller.MemberController;
@@ -24,9 +25,12 @@ public class MemberMenu {
 			Member member = null;
 			int result = 0;
 			String id = null;
+			List<Member> list = null;
 
 			switch (choice) {
 				case "1":
+					list = memberController.selectAllMember();
+					printMemberList(list);
 					break;
 				case "2":
 					break;
@@ -58,7 +62,29 @@ public class MemberMenu {
 		}
 	}
 
-	// 사용자 입력 정보를 Member객체로 반환
+	//
+	// 복수개의 Member객체를 출력하는 메소드
+	// @param list
+	//
+	private void printMemberList(List<Member> list) {
+		if (list.isEmpty()) {
+			System.out.println("조회된 행이 없습니다.");
+		} else {
+			System.out.println(
+					"--------------------------------------------------------------------------------------------");
+			System.out.println(
+					"id	name		gender		birthday		email		address					reg_date");
+			System.out.println(
+					"--------------------------------------------------------------------------------------------");
+			for (Member member : list) {
+				System.out.println(member);
+			}
+			System.out.println(
+					"--------------------------------------------------------------------------------------------");
+
+		}
+	}
+
 	// return
 	private Member inputMember() {
 		System.out.println("새 회원정보를 입력하세요");

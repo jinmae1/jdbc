@@ -1,10 +1,16 @@
 package com.kh.member.model.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.kh.member.model.vo.Member;
 
@@ -32,6 +38,76 @@ public class MemberDao {
 		url = info.get("url");
 		user = info.get("user");
 		password = info.get("password");
+	}
+
+	public List<Member> selectAllMember() {
+
+		// 1. driverClass 등록: 클래스 인스턴스 생성(reflection api)
+		// 2. Connection객체 생성
+		// 3. PreparedStatement객체 생성(쿼리 전달 & 값 대입)
+		// 4. 쿼리 실행 (ResultSet객체 반환)
+		// 5. Result객체 -> List<Member> 변환
+		// 0. 트랜잭션 처리는 없다.(단순 조회만 하는 것이므로)
+		// 6. 자원반납 (생성의 역순 ResultSet -> PreparedStatement -> Connection)
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = "select * from member order by reg_date";
+		List<Member> list = new ArrayList<>(); // 결과집합이 0행이어도 null이 아닌 빈 list객체가 반한되게 하기 위함
+
+		try {
+			// 1.
+			Class.forName(driverClass);
+
+			// 2.
+			conn = DriverManager.getConnection(url, user, password);
+
+			// 3.
+			pstmt = conn.prepareStatement(sql);
+
+			// 4.
+			// 결과집합이 0행이어도 rset이 null이 아니다.
+			rset = pstmt.executeQuery();
+
+			// 5.
+			// rset에 한 행씩 접근해서 Member객체 변환 -> list추가
+			while (rset.next()) {
+				// 한 행(record) -> Member객체
+				String id = rset.getString("id"); // 현재 행의 id컬럼(문자형)
+				String name = rset.getString("name");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String address = rset.getString("address");
+				Timestamp reg_date = rset.getTimestamp("reg_date");
+
+				Member member = new Member(id, name, gender, birthday, email, address, reg_date);
+				list.add(member);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// 6.
+			try {
+				rset.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// System.out.println("list@dao = " + list);
+		return list;
 	}
 
 	public int insertMember(Member member) {
